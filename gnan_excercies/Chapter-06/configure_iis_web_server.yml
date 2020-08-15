@@ -1,0 +1,53 @@
+---
+- hosts: all
+  gather_facts: false
+
+  vars_prompt:
+    - name: user
+      prompt: "Enter SSH user"
+      private: no
+    - name: password
+      prompt: "Enter SSH Password"
+
+  vars:
+    ansible_user: "{{ user }}"
+    ansible_password: "{{ password }}"
+    ansible_connection: winrm
+    ansible_winrm_transport: ntlm
+    ansible_winrm_server_cert_validation: ignore
+
+  tasks: 
+    - name: Install IIS
+      win_feature:
+        name: web-server
+        include_management_tools: yes
+        include_sub_features: yes
+        state: present
+
+    - name: copy index.html to wwwroot
+      win_copy:
+        src: index.html
+        dest: C:\inetpub\wwwroot\index.html
+        force: yes
+
+    - name: Create logs directory
+      win_file:
+        path: c:\logs
+        state: directory
+
+    - name: install net core iis hosting module with no frameworks
+      win_chocolatey:
+        name: "dotnetcore-windowshosting"
+        version: "3.1.0"
+        install_args: "OPT_NO_RUNTIME=1 OPT_NO_SHAREDFX=1 OPT_NO_X86=1 OPT_NO_SHARED_CONFIG_CHECK=1"
+        state: present
+      notify: restart IIS
+    
+    - name: Check the uptime of server
+      win_shell: -Join ($(New-TimeSpan $(Get-ComputerInfo | Select OSLastBootUpTime).OSLastBootUpTime $(Get-Date)).days, " Days") >> c:\uptime.txt
+
+  handlers:
+    - name: restart IIS
+      win_shell: '& {iisreset}'
+
+

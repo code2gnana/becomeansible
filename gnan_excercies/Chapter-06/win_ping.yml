@@ -1,0 +1,14 @@
+---
+- hosts: all
+  gather_facts: false
+
+  vars:
+    ansible_user: ansible
+    ansible_password: Welcome123
+    ansible_winrm_server_cert_validation: ignore
+    ansible_connection: winrm
+
+  tasks:
+  - name: Run Ping
+    win_ping:
+

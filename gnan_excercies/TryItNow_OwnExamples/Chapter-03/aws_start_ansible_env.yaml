@@ -1,0 +1,18 @@
+---
+- name: Start ansible instances
+  hosts: localhost
+  gather_facts: false
+  vars:
+    instance_ids:
+      - 'i-05abad57e2cb5f0e2'
+      - 'i-045d6a3c03dcb79db'
+    region: us-east-1
+  tasks:
+    - name: Start the ansible instances
+      ec2:
+        instance_ids: '{{ instance_ids }}' 
+        region: '{{ region }}'
+        state: running
+        wait: True
+        vpc_subnet_id: subnet-0cb8222e0b4f22296
+        assign_public_ip: yes
