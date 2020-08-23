@@ -3,9 +3,9 @@
 
   vars:
     ansible_user: ansible
-    ansible_password: Welcome123
-    ansible_ssh_common_args: '-o StrictHostkeychecking=no'
+    ansible_password: <Password>
+    ansible_ssh_common_args: '-o StrictHostkeyChecking=no'
 
   tasks:
-  - name: run ping
-    ping: 
+    - name: run ping
+      ping: 

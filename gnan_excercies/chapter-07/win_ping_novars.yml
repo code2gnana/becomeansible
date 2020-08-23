@@ -1,7 +1,6 @@
 ---
- - hosts: all
-   gather_facts: false
-   
+ - hosts: windows
+      
    tasks:
     - name: run win_ping
       win_ping:

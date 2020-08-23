@@ -1,0 +1,17 @@
+[linux:vars]
+ansible_user=ansible
+ansible_password=<Password>
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[linux]
+ec2-3-214-126-92.compute-1.amazonaws.com
+
+[windows:vars]
+ansible_user=ansible
+ansible_password=<Password>
+ansible_connection=winrm
+ansible_winrm_transport=ntlm
+ansible_winrm_server_cert_validation=ignore
+
+[windows]
+ec2-18-204-176-154.compute-1.amazonaws.com
